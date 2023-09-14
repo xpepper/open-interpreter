@@ -9,6 +9,7 @@ import os
 import time
 import json
 import platform
+import logging
 import openai
 import getpass
 import requests
@@ -361,6 +362,22 @@ class Interpreter:
       print(messages)
       print()
 
+    # Set up logging
+    logger = logging.getLogger("openai")
+    logger.setLevel(logging.DEBUG)
+
+    # Create a file handler for logging
+    file_handler = logging.FileHandler("/tmp/openai.log")
+    file_handler.setLevel(logging.DEBUG)
+
+    # Create a formatter and add it to the file handler
+    formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+    file_handler.setFormatter(formatter)
+
+    # Add the file handler to the logger
+    logger.addHandler(file_handler)
+    openai.log='debug'
+    
     # Make LLM call
     if not self.local:
       # gpt-4
